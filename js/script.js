@@ -6,56 +6,22 @@
 document.addEventListener('DOMContentLoaded', function() {
     
     // ==========================================
-    // THEME TOGGLE - System/Light/Dark Mode
+    // THEME TOGGLE - Light/Dark Mode
     // ==========================================
     const themeToggle = document.querySelector('.theme-toggle');
-    const themes = ['system', 'light', 'dark'];
-    let currentThemeIndex = 0;
+    const themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
     
-    // Check for saved theme preference or default to system
-    const savedTheme = localStorage.getItem('theme') || 'system';
-    currentThemeIndex = themes.indexOf(savedTheme);
-    if (currentThemeIndex === -1) currentThemeIndex = 0;
-    
-    function getSystemTheme() {
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
+    // Check for saved theme preference or default to light
+    const savedTheme = localStorage.getItem('theme') || 'light';
     
     function applyTheme(theme) {
-        if (theme === 'system') {
-            const systemTheme = getSystemTheme();
-            document.documentElement.setAttribute('data-theme', 'system');
-            // Apply actual system preference
-            if (systemTheme === 'light') {
-                document.documentElement.style.setProperty('--deep-charcoal', '#ffffff');
-                document.documentElement.style.setProperty('--soft-black', '#f5f5f7');
-                document.documentElement.style.setProperty('--card-bg', 'rgba(0, 0, 0, 0.03)');
-                document.documentElement.style.setProperty('--card-border', 'rgba(0, 0, 0, 0.1)');
-                document.documentElement.style.setProperty('--text-primary', '#1d1d1f');
-                document.documentElement.style.setProperty('--text-secondary', '#6e6e73');
-                document.documentElement.style.setProperty('--header-bg', 'rgba(255, 255, 255, 0.72)');
-                document.documentElement.style.setProperty('--header-bg-scrolled', 'rgba(255, 255, 255, 0.95)');
-            } else {
-                resetToDarkTheme();
-            }
-        } else {
-            document.documentElement.setAttribute('data-theme', theme);
-            if (theme === 'dark') {
-                resetToDarkTheme();
-            }
-        }
+        document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
-    }
-    
-    function resetToDarkTheme() {
-        document.documentElement.style.setProperty('--deep-charcoal', '#0d0d0d');
-        document.documentElement.style.setProperty('--soft-black', '#1d1d1f');
-        document.documentElement.style.setProperty('--card-bg', 'rgba(255, 255, 255, 0.05)');
-        document.documentElement.style.setProperty('--card-border', 'rgba(255, 255, 255, 0.1)');
-        document.documentElement.style.setProperty('--text-primary', '#f5f5f7');
-        document.documentElement.style.setProperty('--text-secondary', '#86868b');
-        document.documentElement.style.setProperty('--header-bg', 'rgba(13, 13, 13, 0.72)');
-        document.documentElement.style.setProperty('--header-bg-scrolled', 'rgba(13, 13, 13, 0.95)');
+        
+        // Update icon
+        if (themeIcon) {
+            themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
     }
     
     // Apply initial theme
@@ -64,40 +30,31 @@ document.addEventListener('DOMContentLoaded', function() {
     // Theme toggle click handler
     if (themeToggle) {
         themeToggle.addEventListener('click', function() {
-            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-            const newTheme = themes[currentThemeIndex];
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             applyTheme(newTheme);
-            
-            // Show tooltip
-            const tooltips = ['System', 'Light', 'Dark'];
-            this.title = `Theme: ${tooltips[currentThemeIndex]}`;
         });
     }
-    
-    // Listen for system theme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (localStorage.getItem('theme') === 'system') {
-            applyTheme('system');
-        }
-    });
     
     // ==========================================
     // SMOOTH SCROLLING WITH EASING
     // ==========================================
-    const navLinks = document.querySelectorAll('header a[href^="#"]');
+    const navLinks = document.querySelectorAll('a[href^="#"]');
     
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault();
             const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            e.preventDefault();
             const targetSection = document.querySelector(targetId);
             
             if (targetSection) {
                 // Close mobile menu if open
-                const navUl = document.querySelector('header ul');
+                const navMenu = document.querySelector('.nav-links');
                 const menuToggle = document.querySelector('.menu-toggle');
-                navUl.classList.remove('active');
-                menuToggle.classList.remove('active');
+                if (navMenu) navMenu.classList.remove('active');
+                if (menuToggle) menuToggle.classList.remove('active');
                 
                 // Smooth scroll with offset for fixed header
                 const headerHeight = document.querySelector('header').offsetHeight;
@@ -115,9 +72,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // MOBILE MENU TOGGLE
     // ==========================================
     const menuToggle = document.querySelector('.menu-toggle');
-    const navMenu = document.querySelector('header ul');
+    const navMenu = document.querySelector('.nav-links');
     
-    if (menuToggle) {
+    if (menuToggle && navMenu) {
         menuToggle.addEventListener('click', function() {
             this.classList.toggle('active');
             navMenu.classList.toggle('active');
@@ -156,10 +113,6 @@ document.addEventListener('DOMContentLoaded', function() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-                
-                // Unobserve after animation (performance optimization)
-                // Commented out to allow re-animation on re-scroll
-                // revealObserver.unobserve(entry.target);
             }
         });
     }, observerOptions);
@@ -167,57 +120,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Observe all reveal elements
     const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger-children');
     revealElements.forEach(el => revealObserver.observe(el));
-
-    // ==========================================
-    // HERO TEXT ANIMATION - Cinematic Reveal
-    // ==========================================
-    const heroHeadline = document.querySelector('.hero-content h1');
-    
-    if (heroHeadline) {
-        // Split text into spans for letter animation
-        const text = heroHeadline.innerHTML;
-        const lines = text.split('<br>');
-        
-        let html = '';
-        lines.forEach((line, lineIndex) => {
-            html += '<span class="line">';
-            const chars = line.split('');
-            chars.forEach((char, charIndex) => {
-                const delay = (lineIndex * 8 + charIndex) * 0.05;
-                html += `<span class="char" style="animation-delay: ${delay}s">${char}</span>`;
-            });
-            html += '</span>';
-            if (lineIndex < lines.length - 1) html += '<br>';
-        });
-        
-        heroHeadline.innerHTML = html;
-        heroHeadline.classList.add('animated');
-    }
-
-    // Add character animation styles dynamically
-    const style = document.createElement('style');
-    style.textContent = `
-        .hero-content h1 .char {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(50px) rotateX(-90deg);
-            animation: charReveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-        
-        @keyframes charReveal {
-            to {
-                opacity: 1;
-                transform: translateY(0) rotateX(0);
-            }
-        }
-        
-        .hero-content h1.animated {
-            animation: none;
-            opacity: 1;
-            transform: none;
-        }
-    `;
-    document.head.appendChild(style);
 
     // ==========================================
     // MAGNETIC CTA BUTTONS
