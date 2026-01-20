@@ -1,8 +1,8 @@
-# Crest Consultancy 🏔️
+# Crest & Peak Consultancy 🏔️
 
-A modern, Apple-inspired website for Crest Consultancy - empowering Kenyan SMEs and startups to achieve sustainable growth.
+A modern, Apple-inspired website for Crest & Peak Consultancy - empowering Kenyan SMEs and startups to achieve sustainable growth.
 
-![Crest Consultancy](https://img.shields.io/badge/Made%20with-❤️%20in%20Kenya-red)
+![Crest & Peak Consultancy](https://img.shields.io/badge/Made%20with-❤️%20in%20Kenya-red)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
@@ -99,5 +99,5 @@ This project is open source and available under the [MIT License](LICENSE).
 ---
 
 <p align="center">
-  Made with ❤️ in Kenya | © 2026 Crest Consultancy
+   Made with ❤️ in Kenya | © 2026 Crest & Peak Consultancy
 </p>

@@ -1,5 +1,5 @@
 /**
- * CREST CONSULTANCY - Modern Apple-Style Animations
+ * CREST & PEAK CONSULTANCY - Modern Apple-Style Animations
  * Smooth transitions, scroll reveals, and interactive elements
  */
 
@@ -362,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function() {
         cursorGlow.style.opacity = '0';
     });
 
-    console.log('🏔️ Crest Consultancy - Modern animations loaded');
+    console.log('🏔️ Crest & Peak Consultancy - Modern animations loaded');
 });
 
 // ==========================================
@@ -376,7 +376,6 @@ function handleContactSubmit() {
     const company = document.getElementById('company').value;
     const message = document.getElementById('message').value;
 
-    // Show loading state
     const form = document.getElementById('contact-form');
     const button = form.querySelector('button');
     const originalText = button.innerHTML;
@@ -384,13 +383,11 @@ function handleContactSubmit() {
     button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
     button.disabled = true;
 
-    // Simulate sending (replace with actual backend integration)
     setTimeout(() => {
         button.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
         button.style.background = '#34C759';
         
         setTimeout(() => {
-            // Show success message
             form.innerHTML = `
                 <div class="analyzing">
                     <i class="fas fa-check-circle" style="font-size: 3rem; color: #34C759; margin-bottom: 20px; display: block;"></i>
@@ -416,11 +413,10 @@ function handleFormSubmit() {
     const challenge = document.getElementById('challenge').value;
     const whatsapp = document.getElementById('whatsapp').value;
 
-    const message = `Hi, I'm ${name}.\n\n📊 Business Stage: ${stage}\n🎯 Biggest Challenge: ${challenge}\n📱 WhatsApp: ${whatsapp}\n\nI'd like to book a scaling audit with Crest Consultancy.`;
+    const message = `Hi, I'm ${name}.\n\n📊 Business Stage: ${stage}\n🎯 Biggest Challenge: ${challenge}\n📱 WhatsApp: ${whatsapp}\n\nI'd like to book a scaling audit with Crest & Peak Consultancy.`;
 
     const whatsappUrl = `https://wa.me/254712345678?text=${encodeURIComponent(message)}`;
 
-    // Show analyzing animation
     const form = document.querySelector('#audit-form form');
     form.innerHTML = `
         <div class="analyzing">
@@ -432,11 +428,9 @@ function handleFormSubmit() {
         </div>
     `;
 
-    // Redirect to WhatsApp after animation
     setTimeout(() => {
         window.open(whatsappUrl, '_blank');
         
-        // Reset form with success message
         setTimeout(() => {
             form.innerHTML = `
                 <div class="analyzing">
