@@ -268,6 +268,9 @@ header nav {
 
 /* Logo */
 .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.25rem;
@@ -282,6 +285,25 @@ header nav {
 
 .logo::after {
     display: none;
+}
+
+.nav-logo {
+    width: 160px;
+    height: 52px;
+    object-fit: contain;
+    flex-shrink: 0;
+    filter: drop-shadow(0 6px 14px rgba(0, 113, 227, 0.28));
+    transition: transform var(--transition-fast), filter var(--transition-fast);
+}
+
+.logo-text {
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.logo:hover .nav-logo {
+    transform: translateY(-1px) scale(1.02);
+    filter: drop-shadow(0 10px 22px rgba(0, 113, 227, 0.35));
 }
 
 /* Nav Links */
@@ -1552,21 +1574,11 @@ footer {
 }
 
 .whatsapp-link {
-    display: inline-flex !important;
-    align-items: center;
-    gap: 10px;
-    background: rgba(37, 211, 102, 0.1);
     color: #25D366 !important;
-    padding: 12px 24px;
-    border-radius: 980px;
-    font-weight: 500;
-    transition: all var(--transition-smooth) !important;
 }
 
 .whatsapp-link:hover {
-    background: #25D366;
-    color: white !important;
-    transform: scale(1.02) translateX(0) !important;
+    color: #25D366 !important;
 }
 
 footer > p {
@@ -1667,7 +1679,12 @@ footer > p {
     }
     
     .logo {
-        font-size: 1.1rem;
+        font-size: 0;
+    }
+
+    .nav-logo {
+        width: 120px;
+        height: 40px;
     }
     
     .nav-links {
