@@ -1932,6 +1932,23 @@ img.loaded {
     object-fit: contain;
 }
 
+.client-logo .brand-text {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+}
+
+.keroche-logo .brand-text {
+    color: #8B4513;
+}
+
+.kakuzi-logo .brand-text {
+    color: #228B22;
+}
+
 /* ==========================================
    CASE STUDIES SECTION
    ========================================== */
