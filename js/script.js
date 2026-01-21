@@ -15,13 +15,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const savedTheme = localStorage.getItem('theme') || 'light';
     
     function applyTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
+        // Add transition class to body for overlay animation
+        document.body.classList.add('theme-transitioning');
         
-        // Update icon
+        // Add rotating animation to icon
         if (themeIcon) {
-            themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            themeIcon.classList.add('rotating');
         }
+        
+        // Animate the transition with a slight delay for visual effect
+        setTimeout(() => {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            // Update icon
+            if (themeIcon) {
+                themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+        }, 150);
+        
+        // Remove transition class
+        setTimeout(() => {
+            document.body.classList.remove('theme-transitioning');
+            if (themeIcon) {
+                themeIcon.classList.remove('rotating');
+            }
+        }, 450);
     }
     
     // Apply initial theme
@@ -316,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function() {
     progressBar.className = 'scroll-progress';
     progressBar.style.cssText = `
         position: fixed;
-        top: 52px;
+        top: 0;
         left: 0;
         width: 0%;
         height: 2px;
@@ -325,6 +344,18 @@ document.addEventListener('DOMContentLoaded', function() {
         transition: width 0.1s ease-out;
     `;
     document.body.appendChild(progressBar);
+
+    const positionProgressBar = () => {
+        const header = document.querySelector('header');
+        const nav = document.querySelector('header nav');
+        const headerHeight = header?.getBoundingClientRect().height || 0;
+        const navHeight = nav?.getBoundingClientRect().height || 64;
+        const offset = headerHeight || navHeight;
+        progressBar.style.top = `${offset}px`;
+    };
+
+    positionProgressBar();
+    window.addEventListener('resize', positionProgressBar);
 
     window.addEventListener('scroll', () => {
         const scrollTop = window.pageYOffset;
