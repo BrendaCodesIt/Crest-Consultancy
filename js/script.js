@@ -509,3 +509,117 @@ function handleLeadSubmit() {
 
     return false;
 }
+
+// ==========================================
+// FAQ ACCORDION
+// ==========================================
+document.querySelectorAll('.faq-question').forEach(button => {
+    button.addEventListener('click', () => {
+        const faqItem = button.parentElement;
+        const isActive = faqItem.classList.contains('active');
+        
+        // Close all other FAQ items
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.classList.remove('active');
+            item.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        });
+        
+        // Toggle current item
+        if (!isActive) {
+            faqItem.classList.add('active');
+            button.setAttribute('aria-expanded', 'true');
+        }
+    });
+});
+
+// ==========================================
+// LIVE CHAT WIDGET
+// ==========================================
+const chatWidget = document.getElementById('chat-widget');
+const chatToggle = document.querySelector('.chat-toggle');
+const chatClose = document.querySelector('.chat-close');
+const chatInput = document.querySelector('.chat-input');
+const chatSend = document.querySelector('.chat-send');
+const chatMessages = document.querySelector('.chat-messages');
+const quickReplies = document.querySelectorAll('.quick-reply');
+const chatBadge = document.querySelector('.chat-badge');
+
+if (chatToggle) {
+    // Toggle chat window
+    chatToggle.addEventListener('click', () => {
+        chatWidget.classList.toggle('active');
+        if (chatWidget.classList.contains('active')) {
+            chatBadge.style.display = 'none';
+            chatInput.focus();
+        }
+    });
+    
+    // Close chat
+    if (chatClose) {
+        chatClose.addEventListener('click', () => {
+            chatWidget.classList.remove('active');
+        });
+    }
+    
+    // Send message function
+    function sendMessage(text) {
+        if (!text.trim()) return;
+        
+        // Add user message
+        const userMessage = document.createElement('div');
+        userMessage.className = 'chat-message user';
+        userMessage.innerHTML = `
+            <p>${text}</p>
+            <span class="message-time">Just now</span>
+        `;
+        chatMessages.appendChild(userMessage);
+        
+        // Clear input
+        chatInput.value = '';
+        
+        // Scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Hide quick replies after first message
+        const quickRepliesContainer = document.querySelector('.chat-quick-replies');
+        if (quickRepliesContainer) {
+            quickRepliesContainer.style.display = 'none';
+        }
+        
+        // Bot response after delay
+        setTimeout(() => {
+            const botMessage = document.createElement('div');
+            botMessage.className = 'chat-message bot';
+            botMessage.innerHTML = `
+                <p>Thanks for your message! Our team will get back to you shortly. In the meantime, feel free to call us at <a href="tel:+254743481406">+254 743 481 406</a> or send us a WhatsApp message.</p>
+                <span class="message-time">Just now</span>
+            `;
+            chatMessages.appendChild(botMessage);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1000);
+    }
+    
+    // Send button click
+    if (chatSend) {
+        chatSend.addEventListener('click', () => {
+            sendMessage(chatInput.value);
+        });
+    }
+    
+    // Enter key to send
+    if (chatInput) {
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage(chatInput.value);
+            }
+        });
+    }
+    
+    // Quick replies
+    quickReplies.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const message = btn.getAttribute('data-message');
+            sendMessage(message);
+        });
+    });
+}
