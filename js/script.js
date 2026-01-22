@@ -5,6 +5,8 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     
+    // Detect touch / small-screen devices to disable heavy mouse interactions
+    const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || window.innerWidth < 768;
     // ==========================================
     // THEME TOGGLE - Light/Dark Mode
     // ==========================================
@@ -140,88 +142,91 @@ document.addEventListener('DOMContentLoaded', function() {
     const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger-children');
     revealElements.forEach(el => revealObserver.observe(el));
 
-    // ==========================================
-    // MAGNETIC CTA BUTTONS
-    // ==========================================
-    const magneticButtons = document.querySelectorAll('.cta-button');
-    
-    magneticButtons.forEach(button => {
-        button.addEventListener('mousemove', (e) => {
-            const rect = button.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            
-            // Subtle magnetic effect
-            const moveX = x * 0.15;
-            const moveY = y * 0.15;
-            
-            button.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.02)`;
-        });
-
-        button.addEventListener('mouseleave', () => {
-            button.style.transform = 'translate(0, 0) scale(1)';
-        });
+    // Disable heavy mouse interactions on touch/small screens
+    if (!isTouch) {
+        // ==========================================
+        // MAGNETIC CTA BUTTONS
+        // ==========================================
+        const magneticButtons = document.querySelectorAll('.cta-button');
         
-        // Ripple effect on click
-        button.addEventListener('click', function(e) {
-            const ripple = document.createElement('span');
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            
-            ripple.style.cssText = `
-                position: absolute;
-                width: ${size}px;
-                height: ${size}px;
-                left: ${e.clientX - rect.left - size/2}px;
-                top: ${e.clientY - rect.top - size/2}px;
-                background: rgba(255, 255, 255, 0.3);
-                border-radius: 50%;
-                transform: scale(0);
-                animation: ripple 0.6s ease-out forwards;
-                pointer-events: none;
-            `;
-            
-            this.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
-        });
-    });
+        magneticButtons.forEach(button => {
+            button.addEventListener('mousemove', (e) => {
+                const rect = button.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                // Subtle magnetic effect
+                const moveX = x * 0.15;
+                const moveY = y * 0.15;
+                
+                button.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.02)`;
+            });
 
-    // Add ripple animation
-    const rippleStyle = document.createElement('style');
-    rippleStyle.textContent = `
-        @keyframes ripple {
-            to {
-                transform: scale(2);
-                opacity: 0;
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translate(0, 0) scale(1)';
+            });
+            
+            // Ripple effect on click
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${e.clientX - rect.left - size/2}px;
+                    top: ${e.clientY - rect.top - size/2}px;
+                    background: rgba(255, 255, 255, 0.3);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out forwards;
+                    pointer-events: none;
+                `;
+                
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add ripple animation
+        const rippleStyle = document.createElement('style');
+        rippleStyle.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
             }
-        }
-    `;
-    document.head.appendChild(rippleStyle);
+        `;
+        document.head.appendChild(rippleStyle);
 
-    // ==========================================
-    // SERVICE CARDS - 3D TILT EFFECT
-    // ==========================================
-    const serviceCards = document.querySelectorAll('.service');
-    
-    serviceCards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = (y - centerY) / 20;
-            const rotateY = (centerX - x) / 20;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
-        });
+        // ==========================================
+        // SERVICE CARDS - 3D TILT EFFECT
+        // ==========================================
+        const serviceCards = document.querySelectorAll('.service');
+        
+        serviceCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+            });
 
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+            });
         });
-    });
+    }
 
     // ==========================================
     // CASE STUDY CARDS - HOVER EFFECT
@@ -271,20 +276,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ==========================================
-    // PARALLAX EFFECT FOR HERO
+    // PARALLAX EFFECT FOR HERO (desktop only)
     // ==========================================
-    const hero = document.querySelector('#hero');
-    
-    if (hero) {
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const rate = scrolled * 0.3;
-            
-            if (scrolled < window.innerHeight) {
-                hero.style.transform = `translateY(${rate}px)`;
-                hero.style.opacity = 1 - (scrolled / window.innerHeight) * 0.5;
-            }
-        }, { passive: true });
+    if (!isTouch) {
+        const hero = document.querySelector('#hero');
+        
+        if (hero) {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled * 0.3;
+                
+                if (scrolled < window.innerHeight) {
+                    hero.style.transform = `translateY(${rate}px)`;
+                    hero.style.opacity = 1 - (scrolled / window.innerHeight) * 0.5;
+                }
+            }, { passive: true });
+        }
     }
 
     // ==========================================
@@ -365,33 +372,35 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { passive: true });
 
     // ==========================================
-    // CURSOR GLOW EFFECT
+    // CURSOR GLOW EFFECT (desktop only)
     // ==========================================
-    const cursorGlow = document.createElement('div');
-    cursorGlow.className = 'cursor-glow';
-    cursorGlow.style.cssText = `
-        position: fixed;
-        width: 400px;
-        height: 400px;
-        background: radial-gradient(circle, rgba(0, 113, 227, 0.08) 0%, transparent 70%);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 0;
-        transform: translate(-50%, -50%);
-        transition: opacity 0.3s ease;
-        opacity: 0;
-    `;
-    document.body.appendChild(cursorGlow);
+    if (!isTouch) {
+        const cursorGlow = document.createElement('div');
+        cursorGlow.className = 'cursor-glow';
+        cursorGlow.style.cssText = `
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 113, 227, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        `;
+        document.body.appendChild(cursorGlow);
 
-    document.addEventListener('mousemove', (e) => {
-        cursorGlow.style.left = e.clientX + 'px';
-        cursorGlow.style.top = e.clientY + 'px';
-        cursorGlow.style.opacity = '1';
-    });
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+            cursorGlow.style.opacity = '1';
+        });
 
-    document.addEventListener('mouseleave', () => {
-        cursorGlow.style.opacity = '0';
-    });
+        document.addEventListener('mouseleave', () => {
+            cursorGlow.style.opacity = '0';
+        });
+    }
 
     console.log('🏔️ Crest & Peak Consultancy - Modern animations loaded');
 });
