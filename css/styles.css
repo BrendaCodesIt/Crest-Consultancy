@@ -1950,6 +1950,21 @@ img.loaded {
     height: 40px;
     width: auto;
     object-fit: contain;
+    filter: brightness(1.2);
+}
+
+/* Light mode: invert logos so they remain visible on light backgrounds */
+[data-theme="light"] .client-logo {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .client-logo img {
+    filter: brightness(0.2) contrast(1.2);
+}
+
+[data-theme="light"] .client-logo:hover img {
+    filter: brightness(0.3) contrast(1.1);
 }
 
 .client-logo .brand-text {
@@ -1967,6 +1982,14 @@ img.loaded {
 
 .kakuzi-logo .brand-text {
     color: #228B22;
+}
+
+[data-theme="light"] .keroche-logo .brand-text {
+    color: #6B3410;
+}
+
+[data-theme="light"] .kakuzi-logo .brand-text {
+    color: #1a6b1a;
 }
 
 /* ==========================================
