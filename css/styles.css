@@ -648,6 +648,14 @@ section h2 {
 }
 
 .about-image {
+    order: 1;
+}
+
+.about-content {
+    order: 2;
+}
+
+.about-image {
     position: relative;
     border-radius: 24px;
     overflow: hidden;
@@ -1653,6 +1661,14 @@ footer > p {
     .contact-grid {
         grid-template-columns: 1fr;
         gap: 40px;
+    }
+
+    .about-content {
+        order: 1;
+    }
+    
+    .about-image {
+        order: 2;
     }
     
     .about-content h2,
